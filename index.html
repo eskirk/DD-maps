@@ -5,7 +5,6 @@
     <title></title>
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
     <link rel='stylesheet' href='https://unpkg.com/leaflet@1.2.0/dist/leaflet.css' />
-    <script src='./county_map.js'></script>
     <script src='https://unpkg.com/leaflet@1.2.0/dist/leaflet.js'></script>
 
     <style>
@@ -19,12 +18,37 @@
 <script>
     var map = L.map('ca_map', {
         center: [38, -121],
-        zoom: 8
+        zoom: 8,
+        attributionControl: false,
+        dragging: true,
+        touchZoom: true,
+        scrollWheelZoom: true,
+        doubleClickZoom: false,
+        boxZoom: true,
+        keyboard: false,
+        zoomControl: true
     });
     
     L.tileLayer('https://api.mapbox.com/styles/v1/digitaldemocracy/cj95ywg5dozjp2snwsdas3zf5/tiles/256/{z}/{x}/{y}?access_token={access_token}', {
        access_token: 'pk.eyJ1IjoiZGlnaXRhbGRlbW9jcmFjeSIsImEiOiJjajUxbWZuYnowNXJyMzNwOXFkYjJxaXcwIn0.NvzOOy_QYRy1fdFfZMLacA' 
     }).addTo(map);
+    
+    var markers = [];
+    
+    var i = 1;
+    while (i < 10) {
+        m = new L.marker([38 + (i / 100), -121 + (i / 100)]);
+        m.bindPopup("I am the number " + i + " popup");
+        markers.push(m); 
+        i = i + 1;
+    }
+    
+    markers.forEach(function(marker) {
+        marker.addTo(map);
+    });
+    
+    markers = new L.featureGroup(markers);
+    map.fitBounds(markers.getBounds());
     
     
 </script>
